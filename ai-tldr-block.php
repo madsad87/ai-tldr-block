@@ -107,29 +107,6 @@ class AI_TLDR_Block {
     public function register_block() {
         // Register block from block.json
         register_block_type(TLDR_PLUGIN_DIR . 'build');
-        
-        // Enqueue editor assets
-        wp_register_script(
-            'ai-tldr-block-editor',
-            TLDR_PLUGIN_URL . 'build/edit.js',
-            array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n'),
-            TLDR_VERSION
-        );
-        
-        wp_register_style(
-            'ai-tldr-block-editor',
-            TLDR_PLUGIN_URL . 'build/editor.css',
-            array('wp-edit-blocks'),
-            TLDR_VERSION
-        );
-        
-        // Enqueue frontend assets
-        wp_register_style(
-            'ai-tldr-block-style',
-            TLDR_PLUGIN_URL . 'build/style.css',
-            array(),
-            TLDR_VERSION
-        );
     }
     
     /**
