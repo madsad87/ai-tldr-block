@@ -130,22 +130,22 @@ if (typeof wp === 'undefined') {
             };
             
             apiFetch({
-                path: '/ai-tldr/v1/generate',
+                path: '/wp-json/ai-tldr/v1/generate',
                 method: 'POST',
                 data: requestData
             }).then(function(response) {
                 if (response.success) {
-                    setSummary(response.data.summary);
-                    setLastGenerated(response.data.generated_at);
+                    setSummary(response.summary);
+                    setLastGenerated(response.generated_at);
                     setAttributes({
-                        summary: response.data.summary,
-                        lastGenerated: response.data.generated_at,
-                        source: response.data.source,
-                        tokenCount: response.data.token_count
+                        summary: response.summary,
+                        lastGenerated: response.generated_at,
+                        source: response.source,
+                        tokenCount: response.tokens
                     });
                     setError('');
                 } else {
-                    setError(response.data.message || __('Failed to generate summary', 'ai-tldr-block'));
+                    setError(response.error || __('Failed to generate summary', 'ai-tldr-block'));
                 }
             }).catch(function(err) {
                 console.error('AI TL;DR: Generation error:', err);
@@ -162,7 +162,7 @@ if (typeof wp === 'undefined') {
             
             if (postData.postId) {
                 apiFetch({
-                    path: '/ai-tldr/v1/pin',
+                    path: '/wp-json/ai-tldr/v1/pin',
                     method: 'POST',
                     data: {
                         post_id: postData.postId,

@@ -169,10 +169,6 @@ class AI_TLDR_Block {
             'style' => 'ai-tldr-block-style',
             'render_callback' => array($this, 'render_block'),
             'attributes' => array(
-                'postId' => array(
-                    'type' => 'number',
-                    'default' => 0
-                ),
                 'summary' => array(
                     'type' => 'string',
                     'default' => ''
@@ -189,25 +185,21 @@ class AI_TLDR_Block {
                     'type' => 'boolean',
                     'default' => false
                 ),
-                'autoRegen' => array(
+                'autoRegenerate' => array(
                     'type' => 'boolean',
-                    'default' => true
+                    'default' => false
                 ),
-                'showMetadata' => array(
-                    'type' => 'boolean',
-                    'default' => true
-                ),
-                'expandThreshold' => array(
-                    'type' => 'number',
-                    'default' => 300
-                ),
-                'backgroundColor' => array(
+                'lastGenerated' => array(
                     'type' => 'string',
-                    'default' => '#f8f9fa'
+                    'default' => ''
                 ),
-                'borderRadius' => array(
+                'source' => array(
+                    'type' => 'string',
+                    'default' => ''
+                ),
+                'tokenCount' => array(
                     'type' => 'number',
-                    'default' => 8
+                    'default' => 0
                 )
             )
         ));
