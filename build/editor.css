@@ -1,0 +1,405 @@
+/**
+ * Editor styles for AI TL;DR Block
+ */
+
+.ai-tldr-block-editor {
+    .wp-block {
+        max-width: none;
+    }
+
+    .components-card {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+
+        .components-card__header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 20px;
+
+            h3 {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 600;
+                color: #1e1e1e;
+            }
+
+            .components-flex {
+                align-items: center;
+                gap: 10px;
+
+                .components-button-group {
+                    .components-button {
+                        font-size: 12px;
+                        height: 32px;
+                        padding: 0 12px;
+
+                        .components-spinner {
+                            margin-right: 5px;
+                        }
+                    }
+                }
+
+                .components-button {
+                    &.is-primary {
+                        background-color: #007cba;
+                        border-color: #007cba;
+
+                        &:hover:not(:disabled) {
+                            background-color: #005a87;
+                            border-color: #005a87;
+                        }
+                    }
+
+                    &.is-secondary {
+                        color: #007cba;
+                        border-color: #007cba;
+
+                        &:hover:not(:disabled) {
+                            color: #005a87;
+                            border-color: #005a87;
+                        }
+                    }
+
+                    &:disabled {
+                        opacity: 0.6;
+                        cursor: not-allowed;
+                    }
+                }
+            }
+        }
+
+        .components-card__body {
+            padding: 20px;
+
+            .components-notice {
+                margin-bottom: 15px;
+
+                &.is-error {
+                    border-left-color: #d63638;
+                }
+
+                &.is-info {
+                    border-left-color: #007cba;
+                }
+            }
+
+            .components-spinner {
+                color: #007cba;
+            }
+
+            .ai-tldr-summary-display {
+                margin-bottom: 15px;
+                padding: 15px;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                border-left: 4px solid #007cba;
+                line-height: 1.6;
+                font-size: 15px;
+                color: #1e1e1e;
+
+                &.is-editing {
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                    border-left: 4px solid #007cba;
+                }
+            }
+
+            .components-textarea-control {
+                .components-base-control__field {
+                    textarea {
+                        font-family: inherit;
+                        font-size: 14px;
+                        line-height: 1.5;
+                        border-radius: 4px;
+                        border: 1px solid #ddd;
+                        padding: 10px;
+
+                        &:focus {
+                            border-color: #007cba;
+                            box-shadow: 0 0 0 1px #007cba;
+                        }
+                    }
+                }
+            }
+
+            .ai-tldr-metadata {
+                margin-top: 15px;
+                padding: 12px;
+                background-color: #f0f0f0;
+                border-radius: 4px;
+                font-size: 12px;
+                color: #666;
+                line-height: 1.4;
+
+                strong {
+                    color: #1e1e1e;
+                }
+
+                .ai-tldr-metadata-item {
+                    margin-bottom: 4px;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+
+            .ai-tldr-empty-state {
+                text-align: center;
+                padding: 40px 20px;
+                color: #757575;
+
+                p {
+                    margin: 0 0 10px 0;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .ai-tldr-empty-icon {
+                    font-size: 48px;
+                    color: #ddd;
+                    margin-bottom: 15px;
+                }
+            }
+
+            .components-flex {
+                gap: 8px;
+                margin-top: 10px;
+
+                .components-button {
+                    font-size: 12px;
+                    height: 28px;
+                    padding: 0 10px;
+
+                    &.is-small {
+                        height: 24px;
+                        padding: 0 8px;
+                        font-size: 11px;
+                    }
+                }
+            }
+        }
+    }
+
+    // Inspector Controls Styling
+    .components-panel__body {
+        .components-base-control {
+            margin-bottom: 16px;
+
+            .components-base-control__label {
+                font-weight: 500;
+                color: #1e1e1e;
+                margin-bottom: 6px;
+            }
+
+            .components-base-control__help {
+                font-size: 12px;
+                color: #757575;
+                margin-top: 6px;
+            }
+        }
+
+        .components-select-control__input {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            padding: 8px 10px;
+
+            &:focus {
+                border-color: #007cba;
+                box-shadow: 0 0 0 1px #007cba;
+            }
+        }
+
+        .components-toggle-control {
+            .components-form-toggle {
+                &.is-checked .components-form-toggle__track {
+                    background-color: #007cba;
+                }
+            }
+        }
+
+        .components-range-control {
+            .components-range-control__slider {
+                &::-webkit-slider-thumb {
+                    background-color: #007cba;
+                }
+
+                &::-moz-range-thumb {
+                    background-color: #007cba;
+                }
+            }
+        }
+
+        .components-color-palette {
+            .components-color-palette__item {
+                .components-color-palette__item-wrapper {
+                    border-radius: 4px;
+                }
+            }
+        }
+    }
+
+    // Loading states
+    .ai-tldr-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+
+        .components-spinner {
+            margin-right: 10px;
+        }
+    }
+
+    // Error states
+    .ai-tldr-error {
+        .components-notice {
+            margin: 0;
+        }
+    }
+
+    // Success states
+    .ai-tldr-success {
+        .ai-tldr-summary-display {
+            border-left-color: #00a32a;
+            background-color: #f0f6fc;
+        }
+    }
+
+    // Pinned state
+    .ai-tldr-pinned {
+        .components-card__header {
+            background-color: #fff3cd;
+            border-bottom-color: #ffeaa7;
+
+            .components-button.is-primary {
+                background-color: #856404;
+                border-color: #856404;
+
+                &:hover:not(:disabled) {
+                    background-color: #533f03;
+                    border-color: #533f03;
+                }
+            }
+        }
+    }
+
+    // Responsive adjustments for editor
+    @media (max-width: 782px) {
+        .components-card__header {
+            .components-flex {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+
+                h3 {
+                    text-align: center;
+                }
+
+                .components-button-group {
+                    justify-content: center;
+                }
+            }
+        }
+
+        .components-card__body {
+            padding: 15px;
+
+            .components-flex {
+                flex-direction: column;
+
+                .components-button {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+
+    // Dark mode support for editor
+    .is-dark-theme & {
+        .components-card {
+            background-color: #1e1e1e;
+            border-color: #3c434a;
+
+            .components-card__header {
+                background-color: #23282d;
+                border-bottom-color: #3c434a;
+
+                h3 {
+                    color: #f0f0f0;
+                }
+            }
+
+            .components-card__body {
+                .ai-tldr-summary-display {
+                    background-color: #23282d;
+                    color: #f0f0f0;
+                }
+
+                .ai-tldr-metadata {
+                    background-color: #32373c;
+                    color: #a7aaad;
+
+                    strong {
+                        color: #f0f0f0;
+                    }
+                }
+
+                .ai-tldr-empty-state {
+                    color: #a7aaad;
+                }
+            }
+        }
+    }
+
+    // High contrast mode
+    @media (prefers-contrast: high) {
+        .components-card {
+            border-width: 2px;
+            border-color: #000;
+
+            .components-card__header {
+                border-bottom-width: 2px;
+                border-bottom-color: #000;
+            }
+
+            .ai-tldr-summary-display {
+                border-left-width: 6px;
+            }
+        }
+    }
+
+    // Reduced motion
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            transition: none !important;
+            animation: none !important;
+        }
+    }
+}
+
+// Block toolbar customizations
+.block-editor-block-toolbar {
+    .ai-tldr-block-editor & {
+        .components-toolbar-group {
+            .components-button {
+                &.is-pressed {
+                    background-color: #007cba;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+// Block list appender
+.block-editor-block-list__layout {
+    .ai-tldr-block-editor {
+        .block-list-appender {
+            margin-top: 20px;
+        }
+    }
+}

@@ -1,0 +1,422 @@
+/**
+ * Admin CSS for AI TL;DR Block
+ */
+
+/* Admin Settings Page */
+.tldr-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.tldr-admin-info h2 {
+    margin-top: 0;
+    color: #1d2327;
+    font-size: 20px;
+}
+
+.tldr-admin-info p {
+    color: #646970;
+    margin-bottom: 0;
+}
+
+.tldr-status-card {
+    background: #f6f7f7;
+    padding: 15px;
+    border-radius: 4px;
+    min-width: 200px;
+    border: 1px solid #dcdcde;
+}
+
+.tldr-status-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #1d2327;
+    font-weight: 600;
+}
+
+.tldr-status-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.tldr-status-item:last-child {
+    margin-bottom: 0;
+}
+
+.tldr-status-label {
+    font-weight: 500;
+    color: #646970;
+}
+
+.tldr-status-value {
+    color: #0073aa;
+    font-weight: bold;
+}
+
+.tldr-admin-content {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+/* Form Styling */
+.tldr-admin-content .form-table th {
+    width: 200px;
+    padding: 15px 10px 15px 0;
+    vertical-align: top;
+}
+
+.tldr-admin-content .form-table td {
+    padding: 15px 10px;
+    vertical-align: top;
+}
+
+.tldr-admin-content input[type="text"],
+.tldr-admin-content input[type="password"],
+.tldr-admin-content input[type="url"],
+.tldr-admin-content input[type="number"],
+.tldr-admin-content select {
+    border-radius: 4px;
+    border: 1px solid #8c8f94;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.tldr-admin-content input[type="text"]:focus,
+.tldr-admin-content input[type="password"]:focus,
+.tldr-admin-content input[type="url"]:focus,
+.tldr-admin-content input[type="number"]:focus,
+.tldr-admin-content select:focus {
+    border-color: #007cba;
+    box-shadow: 0 0 0 1px #007cba;
+    outline: none;
+}
+
+.tldr-admin-content .regular-text {
+    width: 25em;
+}
+
+/* Error States */
+.tldr-error {
+    border-color: #d63638 !important;
+    box-shadow: 0 0 0 1px #d63638 !important;
+}
+
+.tldr-field-error {
+    color: #d63638;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* Test Connection Results */
+#openai-test-result {
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#openai-test-result.success {
+    color: #00a32a;
+}
+
+#openai-test-result.error {
+    color: #d63638;
+}
+
+/* Save Notification */
+.tldr-save-notification {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+/* Activity Logs */
+.tldr-admin-logs {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.tldr-admin-logs h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #1d2327;
+    font-size: 18px;
+}
+
+.tldr-logs-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+}
+
+.tldr-log-entry {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f1;
+    gap: 15px;
+    transition: background-color 0.15s ease;
+}
+
+.tldr-log-entry:hover {
+    background-color: #f6f7f7;
+}
+
+.tldr-log-entry:last-child {
+    border-bottom: none;
+}
+
+.tldr-log-time {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    color: #646970;
+    font-size: 12px;
+    min-width: 60px;
+    background: #f6f7f7;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.tldr-log-content {
+    flex: 1;
+    font-size: 13px;
+}
+
+.tldr-log-content strong {
+    color: #1d2327;
+    font-weight: 600;
+}
+
+.tldr-log-success {
+    color: #00a32a;
+    font-size: 12px;
+    display: block;
+    margin-top: 2px;
+}
+
+.tldr-log-error {
+    color: #d63638;
+    font-size: 12px;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Tooltips */
+.tldr-help-tooltip {
+    cursor: help;
+    color: #646970;
+    text-decoration: none;
+    border-bottom: 1px dotted #646970;
+}
+
+.tldr-tooltip-bubble {
+    position: absolute;
+    background: #1d2327;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    max-width: 250px;
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tldr-tooltip-bubble::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #1d2327 transparent transparent transparent;
+}
+
+/* Responsive Design */
+@media (max-width: 782px) {
+    .tldr-admin-header {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .tldr-status-card {
+        width: 100%;
+    }
+    
+    .tldr-admin-content .form-table th,
+    .tldr-admin-content .form-table td {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+    }
+    
+    .tldr-admin-content .form-table th {
+        border-bottom: none;
+    }
+    
+    .tldr-admin-content .regular-text {
+        width: 100%;
+        max-width: none;
+    }
+    
+    .tldr-log-entry {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .tldr-log-time {
+        align-self: flex-end;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .tldr-admin-header,
+    .tldr-admin-content,
+    .tldr-admin-logs {
+        background: #1d2327;
+        border-color: #3c434a;
+        color: #f0f0f1;
+    }
+    
+    .tldr-admin-info h2,
+    .tldr-admin-logs h2,
+    .tldr-log-content strong {
+        color: #f0f0f1;
+    }
+    
+    .tldr-admin-info p,
+    .tldr-status-label {
+        color: #a7aaad;
+    }
+    
+    .tldr-status-card {
+        background: #2c3338;
+        border-color: #3c434a;
+    }
+    
+    .tldr-log-entry:hover {
+        background-color: #2c3338;
+    }
+    
+    .tldr-log-time {
+        background: #2c3338;
+        color: #a7aaad;
+    }
+    
+    .tldr-logs-container {
+        border-color: #3c434a;
+    }
+    
+    .tldr-log-entry {
+        border-bottom-color: #3c434a;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .tldr-admin-header,
+    .tldr-admin-content,
+    .tldr-admin-logs {
+        border-width: 2px;
+        border-color: #000;
+    }
+    
+    .tldr-status-card {
+        border-width: 2px;
+        border-color: #000;
+    }
+    
+    .tldr-admin-content input[type="text"]:focus,
+    .tldr-admin-content input[type="password"]:focus,
+    .tldr-admin-content input[type="url"]:focus,
+    .tldr-admin-content input[type="number"]:focus,
+    .tldr-admin-content select:focus {
+        border-width: 2px;
+        box-shadow: 0 0 0 2px #000;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .tldr-admin-header,
+    .tldr-admin-content,
+    .tldr-admin-logs {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    
+    .tldr-status-card {
+        background: white;
+    }
+    
+    .nav-tab-wrapper {
+        display: none;
+    }
+    
+    .submit {
+        display: none;
+    }
+}
+
+/* Animation for smooth transitions */
+.tldr-admin-content,
+.tldr-admin-logs {
+    transition: all 0.2s ease;
+}
+
+/* Focus indicators for accessibility */
+.tldr-admin-content button:focus,
+.tldr-admin-content input:focus,
+.tldr-admin-content select:focus {
+    outline: 2px solid #005a87;
+    outline-offset: 2px;
+}
+
+/* Loading states */
+.tldr-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.tldr-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007cba;
+    border-radius: 50%;
+    animation: tldr-spin 1s linear infinite;
+}
+
+@keyframes tldr-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

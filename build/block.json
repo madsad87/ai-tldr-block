@@ -1,0 +1,70 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ai-tldr/summary-block",
+  "version": "1.0.0",
+  "title": "AI Post Summary (TL;DR)",
+  "category": "widgets",
+  "icon": "admin-comments",
+  "description": "Generate AI-powered summaries of your post content with customizable length and tone.",
+  "keywords": ["ai", "summary", "tldr", "openai", "content"],
+  "supports": {
+    "html": false,
+    "multiple": false,
+    "reusable": false,
+    "inserter": true
+  },
+  "attributes": {
+    "postId": {
+      "type": "number",
+      "default": 0
+    },
+    "summary": {
+      "type": "string",
+      "default": ""
+    },
+    "length": {
+      "type": "string",
+      "default": "medium",
+      "enum": ["short", "medium", "bullets"]
+    },
+    "tone": {
+      "type": "string",
+      "default": "neutral",
+      "enum": ["neutral", "executive", "casual"]
+    },
+    "isPinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoRegen": {
+      "type": "boolean",
+      "default": true
+    },
+    "showMetadata": {
+      "type": "boolean",
+      "default": true
+    },
+    "expandThreshold": {
+      "type": "number",
+      "default": 300
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#f8f9fa"
+    },
+    "borderRadius": {
+      "type": "number",
+      "default": 8
+    }
+  },
+  "providesContext": {
+    "ai-tldr/postId": "postId"
+  },
+  "usesContext": ["postId", "postType"],
+  "textdomain": "ai-tldr-block",
+  "editorScript": "file:./edit.js",
+  "editorStyle": "file:./editor.css",
+  "style": "file:./style.css",
+  "render": "file:./render.php"
+}
