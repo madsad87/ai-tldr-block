@@ -135,7 +135,7 @@ class AI_TLDR_Block {
         $script_registered = wp_register_script(
             'ai-tldr-block-editor',
             TLDR_PLUGIN_URL . 'build/index.js',
-            array('wp-blocks', 'wp-block-editor', 'wp-element', 'wp-components', 'wp-i18n'),
+            array('wp-blocks', 'wp-block-editor', 'wp-element', 'wp-components', 'wp-i18n', 'wp-data', 'wp-api-fetch'),
             TLDR_VERSION,
             true
         );
