@@ -105,8 +105,89 @@ class AI_TLDR_Block {
      * Register Gutenberg block
      */
     public function register_block() {
-        // Register block from block.json
-        register_block_type(TLDR_PLUGIN_DIR . 'build');
+        // Register and enqueue the block editor script
+        wp_register_script(
+            'ai-tldr-block-editor',
+            TLDR_PLUGIN_URL . 'build/index.js',
+            array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n'),
+            TLDR_VERSION,
+            true
+        );
+
+        // Register and enqueue the block editor styles
+        wp_register_style(
+            'ai-tldr-block-editor-style',
+            TLDR_PLUGIN_URL . 'build/editor.css',
+            array('wp-edit-blocks'),
+            TLDR_VERSION
+        );
+
+        // Register and enqueue the block frontend styles
+        wp_register_style(
+            'ai-tldr-block-style',
+            TLDR_PLUGIN_URL . 'build/style.css',
+            array(),
+            TLDR_VERSION
+        );
+
+        // Register the block type with explicit script handles
+        register_block_type('ai-tldr/summary-block', array(
+            'editor_script' => 'ai-tldr-block-editor',
+            'editor_style' => 'ai-tldr-block-editor-style',
+            'style' => 'ai-tldr-block-style',
+            'render_callback' => array($this, 'render_block'),
+            'attributes' => array(
+                'postId' => array(
+                    'type' => 'number',
+                    'default' => 0
+                ),
+                'summary' => array(
+                    'type' => 'string',
+                    'default' => ''
+                ),
+                'length' => array(
+                    'type' => 'string',
+                    'default' => 'medium'
+                ),
+                'tone' => array(
+                    'type' => 'string',
+                    'default' => 'neutral'
+                ),
+                'isPinned' => array(
+                    'type' => 'boolean',
+                    'default' => false
+                ),
+                'autoRegen' => array(
+                    'type' => 'boolean',
+                    'default' => true
+                ),
+                'showMetadata' => array(
+                    'type' => 'boolean',
+                    'default' => true
+                ),
+                'expandThreshold' => array(
+                    'type' => 'number',
+                    'default' => 300
+                ),
+                'backgroundColor' => array(
+                    'type' => 'string',
+                    'default' => '#f8f9fa'
+                ),
+                'borderRadius' => array(
+                    'type' => 'number',
+                    'default' => 8
+                )
+            )
+        ));
+    }
+
+    /**
+     * Render callback for the block
+     */
+    public function render_block($attributes, $content) {
+        // For now, just return the saved content
+        // Later we can add dynamic rendering here
+        return $content;
     }
     
     /**
