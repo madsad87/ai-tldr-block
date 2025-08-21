@@ -32,6 +32,7 @@ class TLDR_Admin {
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('admin_init', array($this, 'register_settings'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
+        add_action('wp_ajax_tldr_test_openai', array($this, 'test_openai_connection'));
     }
     
     /**
@@ -381,5 +382,64 @@ class TLDR_Admin {
         }
         
         return $sanitized;
+    }
+    
+    /**
+     * Test OpenAI connection via AJAX
+     */
+    public function test_openai_connection() {
+        // Verify nonce
+        if (!wp_verify_nonce($_POST['nonce'], 'tldr_admin_nonce')) {
+            wp_die(__('Security check failed', 'ai-tldr-block'));
+        }
+        
+        // Check user capabilities
+        if (!current_user_can('manage_options')) {
+            wp_die(__('Insufficient permissions', 'ai-tldr-block'));
+        }
+        
+        $api_key = sanitize_text_field($_POST['api_key']);
+        
+        if (empty($api_key)) {
+            wp_send_json_error(__('API key is required', 'ai-tldr-block'));
+        }
+        
+        // Test the API key with a simple request
+        $response = wp_remote_post('https://api.openai.com/v1/chat/completions', array(
+            'headers' => array(
+                'Authorization' => 'Bearer ' . $api_key,
+                'Content-Type' => 'application/json',
+            ),
+            'body' => json_encode(array(
+                'model' => 'gpt-4o-mini',
+                'messages' => array(
+                    array(
+                        'role' => 'user',
+                        'content' => 'Test connection'
+                    )
+                ),
+                'max_tokens' => 5
+            )),
+            'timeout' => 30
+        ));
+        
+        if (is_wp_error($response)) {
+            wp_send_json_error($response->get_error_message());
+        }
+        
+        $status_code = wp_remote_retrieve_response_code($response);
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+        
+        if ($status_code === 200) {
+            wp_send_json_success(__('OpenAI API connection successful!', 'ai-tldr-block'));
+        } elseif ($status_code === 401) {
+            wp_send_json_error(__('Invalid API key', 'ai-tldr-block'));
+        } elseif ($status_code === 429) {
+            wp_send_json_error(__('Rate limit exceeded', 'ai-tldr-block'));
+        } else {
+            $error_message = isset($data['error']['message']) ? $data['error']['message'] : __('Unknown error', 'ai-tldr-block');
+            wp_send_json_error($error_message);
+        }
     }
 }

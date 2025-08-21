@@ -19,10 +19,12 @@
             
             // Make API request
             $.ajax({
-                url: tldrAdmin.restUrl + 'test-openai',
-                method: 'GET',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', wp.rest.nonce);
+                url: tldrAdmin.ajaxUrl,
+                method: 'POST',
+                data: {
+                    action: 'tldr_test_openai',
+                    nonce: tldrAdmin.nonce,
+                    api_key: $('input[name="tldr_openai_settings[api_key]"]').val()
                 },
                 success: function(response) {
                     if (response.success) {
