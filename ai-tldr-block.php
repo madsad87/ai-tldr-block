@@ -105,14 +105,39 @@ class AI_TLDR_Block {
      * Register Gutenberg block
      */
     public function register_block() {
+        error_log('AI TL;DR: register_block() function called');
+        
+        // Check if we're in admin and in block editor context
+        if (is_admin()) {
+            error_log('AI TL;DR: In admin context');
+        }
+        
+        // Log the plugin URL for debugging
+        error_log('AI TL;DR: Plugin URL: ' . TLDR_PLUGIN_URL);
+        error_log('AI TL;DR: JavaScript file path: ' . TLDR_PLUGIN_URL . 'build/index.js');
+        
+        // Check if the JavaScript file exists
+        $js_file_path = TLDR_PLUGIN_DIR . 'build/index.js';
+        if (file_exists($js_file_path)) {
+            error_log('AI TL;DR: JavaScript file exists at: ' . $js_file_path);
+        } else {
+            error_log('AI TL;DR: ERROR - JavaScript file NOT found at: ' . $js_file_path);
+        }
+        
         // Register and enqueue the block editor script
-        wp_register_script(
+        $script_registered = wp_register_script(
             'ai-tldr-block-editor',
             TLDR_PLUGIN_URL . 'build/index.js',
             array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n'),
             TLDR_VERSION,
             true
         );
+        
+        if ($script_registered) {
+            error_log('AI TL;DR: Script registered successfully');
+        } else {
+            error_log('AI TL;DR: ERROR - Script registration failed');
+        }
 
         // Register and enqueue the block editor styles
         wp_register_style(
@@ -131,7 +156,7 @@ class AI_TLDR_Block {
         );
 
         // Register the block type with explicit script handles
-        register_block_type('ai-tldr/summary-block', array(
+        $block_registered = register_block_type('ai-tldr/summary-block', array(
             'editor_script' => 'ai-tldr-block-editor',
             'editor_style' => 'ai-tldr-block-editor-style',
             'style' => 'ai-tldr-block-style',
@@ -179,6 +204,14 @@ class AI_TLDR_Block {
                 )
             )
         ));
+        
+        if ($block_registered) {
+            error_log('AI TL;DR: Block type registered successfully');
+        } else {
+            error_log('AI TL;DR: ERROR - Block type registration failed');
+        }
+        
+        error_log('AI TL;DR: register_block() function completed');
     }
 
     /**
