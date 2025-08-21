@@ -78,36 +78,40 @@ if ($length === 'bullets' && strpos($formatted_summary, '•') !== false) {
 }
 
 // Format date
-function format_tldr_date($date_string) {
-    if (empty($date_string)) return '';
-    
-    $date = new DateTime($date_string);
-    $now = new DateTime();
-    $diff = $now->diff($date);
-    
-    if ($diff->days == 0) {
-        if ($diff->h == 0) {
-            return sprintf(_n('%d minute ago', '%d minutes ago', $diff->i, 'ai-tldr-block'), $diff->i);
+if (!function_exists('format_tldr_date')) {
+    function format_tldr_date($date_string) {
+        if (empty($date_string)) return '';
+        
+        $date = new DateTime($date_string);
+        $now = new DateTime();
+        $diff = $now->diff($date);
+        
+        if ($diff->days == 0) {
+            if ($diff->h == 0) {
+                return sprintf(_n('%d minute ago', '%d minutes ago', $diff->i, 'ai-tldr-block'), $diff->i);
+            }
+            return sprintf(_n('%d hour ago', '%d hours ago', $diff->h, 'ai-tldr-block'), $diff->h);
+        } elseif ($diff->days == 1) {
+            return __('Yesterday', 'ai-tldr-block');
+        } elseif ($diff->days < 7) {
+            return sprintf(_n('%d day ago', '%d days ago', $diff->days, 'ai-tldr-block'), $diff->days);
+        } else {
+            return $date->format(get_option('date_format'));
         }
-        return sprintf(_n('%d hour ago', '%d hours ago', $diff->h, 'ai-tldr-block'), $diff->h);
-    } elseif ($diff->days == 1) {
-        return __('Yesterday', 'ai-tldr-block');
-    } elseif ($diff->days < 7) {
-        return sprintf(_n('%d day ago', '%d days ago', $diff->days, 'ai-tldr-block'), $diff->days);
-    } else {
-        return $date->format(get_option('date_format'));
     }
 }
 
 // Get source label
-function get_tldr_source_label($source) {
-    switch ($source) {
-        case 'mvdb':
-            return __('Vector Database', 'ai-tldr-block');
-        case 'raw':
-            return __('Post Content', 'ai-tldr-block');
-        default:
-            return __('Unknown', 'ai-tldr-block');
+if (!function_exists('get_tldr_source_label')) {
+    function get_tldr_source_label($source) {
+        switch ($source) {
+            case 'mvdb':
+                return __('Vector Database', 'ai-tldr-block');
+            case 'raw':
+                return __('Post Content', 'ai-tldr-block');
+            default:
+                return __('Unknown', 'ai-tldr-block');
+        }
     }
 }
 
