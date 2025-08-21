@@ -225,9 +225,14 @@ class AI_TLDR_Block {
      * Render callback for the block
      */
     public function render_block($attributes, $content) {
-        // For now, just return the saved content
-        // Later we can add dynamic rendering here
-        return $content;
+        // Start output buffering
+        ob_start();
+        
+        // Include the render template
+        include TLDR_PLUGIN_DIR . 'build/render.php';
+        
+        // Return the rendered content
+        return ob_get_clean();
     }
     
     /**
