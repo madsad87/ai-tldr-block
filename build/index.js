@@ -1,7 +1,24 @@
 import { registerBlockType } from '@wordpress/blocks';
-import Edit from './edit';
-import save from './save';
-import metadata from './block.json';
+import { useBlockProps } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
+
+// Simple edit component
+function Edit() {
+    return (
+        <div {...useBlockProps()}>
+            <p>{__('AI Post Summary (TL;DR) - Block is working!', 'ai-tldr-block')}</p>
+        </div>
+    );
+}
+
+// Simple save component
+function save() {
+    return (
+        <div {...useBlockProps.save()}>
+            <p>AI Post Summary (TL;DR) - Saved content</p>
+        </div>
+    );
+}
 
 // Custom icon for the block
 const tldrIcon = (
@@ -15,8 +32,19 @@ const tldrIcon = (
     </svg>
 );
 
-registerBlockType(metadata.name, {
+// Register the block
+registerBlockType('ai-tldr/summary-block', {
+    title: __('AI Post Summary (TL;DR)', 'ai-tldr-block'),
+    description: __('Generate AI-powered summaries of your post content with customizable length and tone.', 'ai-tldr-block'),
+    category: 'widgets',
     icon: tldrIcon,
+    keywords: ['ai', 'summary', 'tldr', 'openai', 'content'],
+    supports: {
+        html: false,
+        multiple: false,
+        reusable: false,
+        inserter: true
+    },
     edit: Edit,
-    save
+    save: save
 });
