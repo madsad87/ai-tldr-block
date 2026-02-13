@@ -151,7 +151,7 @@ class AI_TLDR_Block {
         wp_register_script(
             'ai-tldr-editor-fallback',
             TLDR_PLUGIN_URL . 'build/editor-fallback.js',
-            array('wp-blocks', 'wp-block-editor', 'wp-components', 'wp-element', 'wp-i18n'),
+            array('wp-blocks', 'wp-block-editor', 'wp-components', 'wp-element', 'wp-i18n', 'wp-data', 'wp-api-fetch'),
             TLDR_VERSION,
             true
         );
