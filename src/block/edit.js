@@ -465,16 +465,17 @@ export default function Edit({ attributes, setAttributes, context }) {
                                     </div>
                                 ) : (
                                     <div>
+                                        {/* Regression guard: never use dangerouslySetInnerHTML for model/user summary content in editor preview. */}
                                         <div 
                                             style={{ 
                                                 marginBottom: '15px',
                                                 lineHeight: '1.6',
-                                                fontSize: '16px'
+                                                fontSize: '16px',
+                                                whiteSpace: 'pre-line'
                                             }}
-                                            dangerouslySetInnerHTML={{ 
-                                                __html: summary.replace(/\n/g, '<br>') 
-                                            }}
-                                        />
+                                        >
+                                            {summary}
+                                        </div>
                                         <Flex gap={2}>
                                             <Button
                                                 variant="secondary"
