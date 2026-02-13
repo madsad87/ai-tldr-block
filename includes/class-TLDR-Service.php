@@ -290,6 +290,7 @@ class TLDR_Service {
         $metadata = array(
             'source' => get_post_meta($post_id, '_ai_tldr_source', true),
             'is_pinned' => get_post_meta($post_id, '_ai_tldr_is_pinned', true),
+            'autoRegen' => get_post_meta($post_id, '_ai_tldr_auto_regen', true),
             'length' => get_post_meta($post_id, '_ai_tldr_len', true),
             'tone' => get_post_meta($post_id, '_ai_tldr_tone', true),
             'generated_at' => get_post_meta($post_id, '_ai_tldr_generated_at', true),

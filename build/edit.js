@@ -96,7 +96,7 @@ export default function Edit({ attributes, setAttributes, context }) {
                     length: response.metadata.length || 'medium',
                     tone: response.metadata.tone || 'neutral',
                     isPinned: response.metadata.is_pinned === 'true',
-                    autoRegen: response.metadata.auto_regen !== 'false'
+                    autoRegen: response.metadata.autoRegen !== 'false'
                 });
                 setMetadata(response.metadata);
             }
