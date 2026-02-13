@@ -64,6 +64,9 @@ A WordPress Gutenberg block plugin that generates AI-powered post summaries with
 3. Configure length, tone, and appearance settings
 4. Click "Generate" to create your first summary
 
+<img width="1223" height="528" alt="Screenshot 2026-02-13 at 3 48 07 PM" src="https://github.com/user-attachments/assets/87ff1211-6cd3-40f2-9acd-5caa2bd8f745" />
+
+
 ### Troubleshooting: Block not visible in inserter
 - If the browser console shows `Cannot use import statement outside a module` for `build/index.js`, your environment is loading unbundled editor assets.
 - The plugin now includes a fallback editor registration path that keeps `ai-tldr/summary-block` insertable even when `build/index.asset.php` is missing.
@@ -75,6 +78,9 @@ A WordPress Gutenberg block plugin that generates AI-powered post summaries with
 - **Tone**: Select Neutral, Executive, or Casual tone
 - **Auto-regenerate**: Enable/disable automatic updates on content changes
 - **Appearance**: Customize background color, border radius, and expand threshold
+
+<img width="843" height="709" alt="Screenshot 2026-02-13 at 3 48 53 PM" src="https://github.com/user-attachments/assets/e3fb9d1c-7db1-484a-aaa2-5783264d6f95" />
+
 
 ### Managing Summaries
 - **Pin**: Lock summaries to prevent automatic updates
