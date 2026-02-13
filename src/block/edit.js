@@ -99,6 +99,9 @@ export default function Edit({ attributes, setAttributes, context }) {
                     autoRegen: response.metadata.autoRegen !== 'false'
                 });
                 setMetadata(response.metadata);
+            } else if (response.metadata && response.metadata.auto_regen !== undefined) {
+                setAttributes({ autoRegen: response.metadata.auto_regen !== 'false' });
+                setMetadata(response.metadata);
             }
         } catch (err) {
             setError(__('Failed to load existing summary', 'ai-tldr-block'));
@@ -233,6 +236,43 @@ export default function Edit({ attributes, setAttributes, context }) {
         }
     };
 
+
+    const updateAutoRegen = async (value) => {
+        if (!postId) {
+            setAttributes({ autoRegen: value });
+            return;
+        }
+
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const response = await apiFetch({
+                path: '/ai-tldr/v1/update',
+                method: 'POST',
+                data: {
+                    post_id: postId,
+                    auto_regen: value
+                }
+            });
+
+            if (response.success) {
+                const canonicalValue = response.auto_regen !== 'false';
+                setAttributes({ autoRegen: canonicalValue });
+                setMetadata((current) => ({
+                    ...current,
+                    auto_regen: response.auto_regen
+                }));
+            } else {
+                setError(response.error || __('Failed to update auto-regeneration setting', 'ai-tldr-block'));
+            }
+        } catch (err) {
+            setError(err.message || __('Failed to update auto-regeneration setting', 'ai-tldr-block'));
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const formatDate = (dateString) => {
         if (!dateString) return '';
         const date = new Date(dateString);
@@ -279,7 +319,7 @@ export default function Edit({ attributes, setAttributes, context }) {
                     <ToggleControl
                         label={__('Auto-regenerate on post update', 'ai-tldr-block')}
                         checked={autoRegen}
-                        onChange={(value) => setAttributes({ autoRegen: value })}
+                        onChange={updateAutoRegen}
                         help={__('Automatically update summary when post content changes', 'ai-tldr-block')}
                     />
 
@@ -425,16 +465,17 @@ export default function Edit({ attributes, setAttributes, context }) {
                                     </div>
                                 ) : (
                                     <div>
+                                        {/* Regression guard: never use dangerouslySetInnerHTML for model/user summary content in editor preview. */}
                                         <div 
                                             style={{ 
                                                 marginBottom: '15px',
                                                 lineHeight: '1.6',
-                                                fontSize: '16px'
+                                                fontSize: '16px',
+                                                whiteSpace: 'pre-line'
                                             }}
-                                            dangerouslySetInnerHTML={{ 
-                                                __html: summary.replace(/\n/g, '<br>') 
-                                            }}
-                                        />
+                                        >
+                                            {summary}
+                                        </div>
                                         <Flex gap={2}>
                                             <Button
                                                 variant="secondary"

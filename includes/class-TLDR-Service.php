@@ -275,12 +275,15 @@ class TLDR_Service {
      */
     public static function get_summary($post_id) {
         $summary = get_post_meta($post_id, '_ai_tldr_summary', true);
+        $auto_regen = self::get_auto_regen_status($post_id);
         
         if (empty($summary)) {
             return array(
                 'exists' => false,
                 'summary' => '',
-                'metadata' => array()
+                'metadata' => array(
+                    'auto_regen' => $auto_regen ? 'true' : 'false'
+                )
             );
         }
         
@@ -293,7 +296,8 @@ class TLDR_Service {
             'generated_at' => get_post_meta($post_id, '_ai_tldr_generated_at', true),
             'tokens' => get_post_meta($post_id, '_ai_tldr_tokens', true),
             'content_hash' => get_post_meta($post_id, '_ai_tldr_content_hash', true),
-            'ai_copy' => get_post_meta($post_id, '_ai_tldr_ai_copy', true)
+            'ai_copy' => get_post_meta($post_id, '_ai_tldr_ai_copy', true),
+            'auto_regen' => $auto_regen ? 'true' : 'false'
         );
         
         return array(
@@ -332,6 +336,63 @@ class TLDR_Service {
     public static function set_pinned_status($post_id, $pinned) {
         update_post_meta($post_id, '_ai_tldr_is_pinned', $pinned ? 'true' : 'false');
         return true;
+    }
+
+    /**
+     * Get normalized auto-regeneration status for a post.
+     *
+     * @param int $post_id Post ID
+     * @return bool Auto regeneration enabled status
+     */
+    public static function get_auto_regen_status($post_id) {
+        $value = get_post_meta($post_id, '_ai_tldr_auto_regen', true);
+
+        if ($value === '' || $value === null) {
+            return true;
+        }
+
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            $normalized = strtolower(trim($value));
+            return !in_array($normalized, array('false', '0', 'off', 'no'), true);
+        }
+
+        return (bool) $value;
+    }
+
+    /**
+     * Set canonical auto-regeneration status for a post.
+     *
+     * @param int $post_id Post ID
+     * @param bool|string|int $auto_regen Auto regeneration status to persist
+     * @return bool True on success
+     */
+    public static function set_auto_regen_status($post_id, $auto_regen) {
+        $normalized = self::normalize_auto_regen_input($auto_regen);
+
+        return (bool) update_post_meta($post_id, '_ai_tldr_auto_regen', $normalized ? 'true' : 'false');
+    }
+
+    /**
+     * Normalize auto-regeneration input value.
+     *
+     * @param bool|string|int $value Raw input value
+     * @return bool Normalized boolean
+     */
+    private static function normalize_auto_regen_input($value) {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            $normalized = strtolower(trim($value));
+            return in_array($normalized, array('1', 'true', 'yes', 'on'), true);
+        }
+
+        return (bool) $value;
     }
     
     /**

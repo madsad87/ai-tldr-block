@@ -98,9 +98,13 @@ class TLDR_Rest {
                     'validate_callback' => array($this, 'validate_post_id')
                 ),
                 'summary' => array(
-                    'required' => true,
+                    'required' => false,
                     'type' => 'string',
                     'sanitize_callback' => 'sanitize_textarea_field'
+                ),
+                'auto_regen' => array(
+                    'required' => false,
+                    'type' => 'boolean'
                 )
             )
         ));
@@ -216,6 +220,7 @@ class TLDR_Rest {
     public function update_summary($request) {
         $post_id = $request->get_param('post_id');
         $summary = $request->get_param('summary');
+        $auto_regen = $request->get_param('auto_regen');
         
         // Verify nonce
         if (!$this->verify_nonce($request)) {
@@ -225,19 +230,26 @@ class TLDR_Rest {
             ), 403);
         }
         
-        $success = TLDR_Service::update_summary($post_id, $summary);
-        
-        if ($success) {
-            return new WP_REST_Response(array(
-                'success' => true,
-                'message' => 'Summary updated successfully'
-            ), 200);
-        } else {
-            return new WP_REST_Response(array(
-                'success' => false,
-                'error' => 'Failed to update summary'
-            ), 400);
+        if ($summary !== null) {
+            $summary_success = TLDR_Service::update_summary($post_id, $summary);
+
+            if (!$summary_success) {
+                return new WP_REST_Response(array(
+                    'success' => false,
+                    'error' => 'Failed to update summary'
+                ), 400);
+            }
         }
+
+        if ($auto_regen !== null) {
+            TLDR_Service::set_auto_regen_status($post_id, $auto_regen);
+        }
+
+        return new WP_REST_Response(array(
+            'success' => true,
+            'message' => 'Summary updated successfully',
+            'auto_regen' => TLDR_Service::get_auto_regen_status($post_id) ? 'true' : 'false'
+        ), 200);
     }
     
     /**

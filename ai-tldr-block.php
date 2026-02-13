@@ -45,33 +45,26 @@ class AI_TLDR_Block {
      * Constructor
      */
     private function __construct() {
-        error_log('AI TL;DR: Constructor called');
         add_action('init', array($this, 'init'));
         register_activation_hook(__FILE__, array($this, 'activate'));
         register_deactivation_hook(__FILE__, array($this, 'deactivate'));
-        error_log('AI TL;DR: Constructor completed, init action added');
     }
     
     /**
      * Initialize plugin
      */
     public function init() {
-        error_log('AI TL;DR: init() method called');
-        
         // Load text domain
         load_plugin_textdomain('ai-tldr-block', false, dirname(plugin_basename(__FILE__)) . '/languages');
         
         // Include required files
         $this->includes();
-        error_log('AI TL;DR: Required files included');
         
         // Initialize components
         $this->init_components();
-        error_log('AI TL;DR: Components initialized');
         
         // Register Gutenberg block directly (no need for another init hook)
         $this->register_block();
-        error_log('AI TL;DR: Block registration called directly');
     }
     
     /**
@@ -134,13 +127,9 @@ class AI_TLDR_Block {
         // Register the block type from build/block.json (single source of truth)
         $block_registered = register_block_type(TLDR_PLUGIN_DIR . 'build');
         
-        if ($block_registered) {
-            error_log('AI TL;DR: Block type registered successfully');
-        } else {
+        if (!$block_registered) {
             error_log('AI TL;DR: ERROR - Block type registration failed');
         }
-        
-        error_log('AI TL;DR: register_block() function completed');
     }
 
     /**
