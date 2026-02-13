@@ -33,6 +33,8 @@ class TLDR_Admin {
         add_action('admin_init', array($this, 'register_settings'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('wp_ajax_tldr_test_openai', array($this, 'test_openai_connection'));
+        add_action('wp_ajax_tldr_clear_queue', array($this, 'clear_queue'));
+        add_action('wp_ajax_tldr_get_queue_status', array($this, 'get_queue_status'));
     }
     
     /**
@@ -389,13 +391,11 @@ class TLDR_Admin {
      */
     public function test_openai_connection() {
         // Verify nonce
-        if (!wp_verify_nonce($_POST['nonce'], 'tldr_admin_nonce')) {
-            wp_die(__('Security check failed', 'ai-tldr-block'));
-        }
+        check_ajax_referer('tldr_admin_nonce', 'nonce');
         
         // Check user capabilities
         if (!current_user_can('manage_options')) {
-            wp_die(__('Insufficient permissions', 'ai-tldr-block'));
+            wp_send_json_error(__('Insufficient permissions', 'ai-tldr-block'));
         }
         
         $api_key = sanitize_text_field($_POST['api_key']);
@@ -432,7 +432,9 @@ class TLDR_Admin {
         $data = json_decode($body, true);
         
         if ($status_code === 200) {
-            wp_send_json_success(__('OpenAI API connection successful!', 'ai-tldr-block'));
+            wp_send_json_success(array(
+                'message' => __('OpenAI API connection successful!', 'ai-tldr-block')
+            ));
         } elseif ($status_code === 401) {
             wp_send_json_error(__('Invalid API key', 'ai-tldr-block'));
         } elseif ($status_code === 429) {
@@ -441,5 +443,39 @@ class TLDR_Admin {
             $error_message = isset($data['error']['message']) ? $data['error']['message'] : __('Unknown error', 'ai-tldr-block');
             wp_send_json_error($error_message);
         }
+    }
+
+    /**
+     * Clear queue via AJAX.
+     */
+    public function clear_queue() {
+        check_ajax_referer('tldr_admin_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(__('Insufficient permissions', 'ai-tldr-block'));
+        }
+
+        $cleared = TLDR_Cron::clear_queue();
+
+        if ($cleared) {
+            wp_send_json_success(array(
+                'message' => __('Queue cleared successfully.', 'ai-tldr-block')
+            ));
+        }
+
+        wp_send_json_error(__('Failed to clear queue.', 'ai-tldr-block'));
+    }
+
+    /**
+     * Return queue status via AJAX.
+     */
+    public function get_queue_status() {
+        check_ajax_referer('tldr_admin_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(__('Insufficient permissions', 'ai-tldr-block'));
+        }
+
+        wp_send_json_success(TLDR_Cron::get_queue_status());
     }
 }
