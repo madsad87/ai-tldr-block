@@ -41,6 +41,11 @@ $recent_logs = TLDR_Cron::get_recent_logs();
                     <span class="tldr-status-value"><?php echo esc_html(date('H:i:s', $queue_status['next_run'])); ?></span>
                 </div>
                 <?php endif; ?>
+                <p>
+                    <button type="button" class="button button-secondary" id="clear-queue">
+                        <?php echo esc_html__('Clear Queue', 'ai-tldr-block'); ?>
+                    </button>
+                </p>
             </div>
         </div>
     </div>
