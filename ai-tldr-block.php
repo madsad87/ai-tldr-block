@@ -124,11 +124,68 @@ class AI_TLDR_Block {
             error_log('AI TL;DR: ERROR - block metadata NOT found at: ' . $block_json_path);
         }
 
-        // Register the block type from build/block.json (single source of truth)
-        $block_registered = register_block_type(TLDR_PLUGIN_DIR . 'build');
-        
+        // Prefer fully built WordPress assets when available.
+        $asset_file_path = TLDR_PLUGIN_DIR . 'build/index.asset.php';
+        if (file_exists($asset_file_path)) {
+            $block_registered = register_block_type(TLDR_PLUGIN_DIR . 'build');
+            if (!$block_registered) {
+                error_log('AI TL;DR: ERROR - Block type registration failed using build metadata');
+            }
+            return;
+        }
+
+        // Fallback registration path for environments where build output was copied
+        // without webpack-generated .asset.php files. This keeps the block insertable.
+        error_log('AI TL;DR: index.asset.php missing, using fallback editor registration');
+
+        $metadata = array();
+        if (file_exists($block_json_path)) {
+            $metadata_contents = file_get_contents($block_json_path);
+            if ($metadata_contents !== false) {
+                $metadata = json_decode($metadata_contents, true);
+            }
+        }
+
+        $block_name = $metadata['name'] ?? 'ai-tldr/summary-block';
+
+        wp_register_script(
+            'ai-tldr-editor-fallback',
+            TLDR_PLUGIN_URL . 'build/editor-fallback.js',
+            array('wp-blocks', 'wp-block-editor', 'wp-components', 'wp-element', 'wp-i18n'),
+            TLDR_VERSION,
+            true
+        );
+
+        wp_register_style(
+            'ai-tldr-editor-style-fallback',
+            TLDR_PLUGIN_URL . 'build/editor.css',
+            array('wp-edit-blocks'),
+            TLDR_VERSION
+        );
+
+        wp_register_style(
+            'ai-tldr-style-fallback',
+            TLDR_PLUGIN_URL . 'build/style.css',
+            array(),
+            TLDR_VERSION
+        );
+
+        $block_registered = register_block_type($block_name, array(
+            'title' => $metadata['title'] ?? __('AI Post Summary (TL;DR)', 'ai-tldr-block'),
+            'description' => $metadata['description'] ?? __('Generate AI-powered summaries of your post content.', 'ai-tldr-block'),
+            'category' => $metadata['category'] ?? 'widgets',
+            'icon' => $metadata['icon'] ?? 'admin-comments',
+            'keywords' => $metadata['keywords'] ?? array('ai', 'summary', 'tldr'),
+            'supports' => $metadata['supports'] ?? array('html' => false),
+            'attributes' => $metadata['attributes'] ?? array(),
+            'editor_script' => 'ai-tldr-editor-fallback',
+            'editor_style' => 'ai-tldr-editor-style-fallback',
+            'style' => 'ai-tldr-style-fallback',
+            'render_callback' => array($this, 'render_block'),
+        ));
+
         if (!$block_registered) {
-            error_log('AI TL;DR: ERROR - Block type registration failed');
+            error_log('AI TL;DR: ERROR - Block type fallback registration failed');
         }
     }
 
