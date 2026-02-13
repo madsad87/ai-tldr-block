@@ -45,33 +45,26 @@ class AI_TLDR_Block {
      * Constructor
      */
     private function __construct() {
-        error_log('AI TL;DR: Constructor called');
         add_action('init', array($this, 'init'));
         register_activation_hook(__FILE__, array($this, 'activate'));
         register_deactivation_hook(__FILE__, array($this, 'deactivate'));
-        error_log('AI TL;DR: Constructor completed, init action added');
     }
     
     /**
      * Initialize plugin
      */
     public function init() {
-        error_log('AI TL;DR: init() method called');
-        
         // Load text domain
         load_plugin_textdomain('ai-tldr-block', false, dirname(plugin_basename(__FILE__)) . '/languages');
         
         // Include required files
         $this->includes();
-        error_log('AI TL;DR: Required files included');
         
         // Initialize components
         $this->init_components();
-        error_log('AI TL;DR: Components initialized');
         
         // Register Gutenberg block directly (no need for another init hook)
         $this->register_block();
-        error_log('AI TL;DR: Block registration called directly');
     }
     
     /**
@@ -112,22 +105,9 @@ class AI_TLDR_Block {
      * Register Gutenberg block
      */
     public function register_block() {
-        error_log('AI TL;DR: register_block() function called');
-        
-        // Check if we're in admin and in block editor context
-        if (is_admin()) {
-            error_log('AI TL;DR: In admin context');
-        }
-        
-        // Log the plugin URL for debugging
-        error_log('AI TL;DR: Plugin URL: ' . TLDR_PLUGIN_URL);
-        error_log('AI TL;DR: JavaScript file path: ' . TLDR_PLUGIN_URL . 'build/index.js');
-        
         // Check if the JavaScript file exists
         $js_file_path = TLDR_PLUGIN_DIR . 'build/index.js';
-        if (file_exists($js_file_path)) {
-            error_log('AI TL;DR: JavaScript file exists at: ' . $js_file_path);
-        } else {
+        if (!file_exists($js_file_path)) {
             error_log('AI TL;DR: ERROR - JavaScript file NOT found at: ' . $js_file_path);
         }
         
@@ -140,9 +120,7 @@ class AI_TLDR_Block {
             true
         );
         
-        if ($script_registered) {
-            error_log('AI TL;DR: Script registered successfully');
-        } else {
+        if (!$script_registered) {
             error_log('AI TL;DR: ERROR - Script registration failed');
         }
 
@@ -204,13 +182,9 @@ class AI_TLDR_Block {
             )
         ));
         
-        if ($block_registered) {
-            error_log('AI TL;DR: Block type registered successfully');
-        } else {
+        if (!$block_registered) {
             error_log('AI TL;DR: ERROR - Block type registration failed');
         }
-        
-        error_log('AI TL;DR: register_block() function completed');
     }
 
     /**
