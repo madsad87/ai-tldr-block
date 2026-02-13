@@ -226,8 +226,7 @@ class TLDR_Cron {
         }
         
         // Check if auto-regeneration is enabled for this post
-        $auto_regen = get_post_meta($post_id, '_ai_tldr_auto_regen', true);
-        if ($auto_regen === 'false' || $auto_regen === false) {
+        if (!TLDR_Service::get_auto_regen_status($post_id)) {
             return array(
                 'success' => true,
                 'message' => 'Auto-regeneration disabled'
@@ -277,8 +276,7 @@ class TLDR_Cron {
         }
         
         // Check if auto-regeneration is enabled
-        $auto_regen = get_post_meta($post_id, '_ai_tldr_auto_regen', true);
-        if ($auto_regen === 'false' || $auto_regen === false) {
+        if (!TLDR_Service::get_auto_regen_status($post_id)) {
             return;
         }
         
