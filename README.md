@@ -179,6 +179,8 @@ Check `/wp-content/debug.log` for detailed error messages.
 ## Development
 
 ### Building Assets
+> Maintainer note: `build/` is committed output. Whenever files in `src/` change, regenerate and commit the corresponding files in `build/` in the same change.
+
 For development, you can modify files in `src/` and copy to `build/`:
 
 ```bash

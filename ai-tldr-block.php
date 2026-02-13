@@ -121,88 +121,18 @@ class AI_TLDR_Block {
         
         // Log the plugin URL for debugging
         error_log('AI TL;DR: Plugin URL: ' . TLDR_PLUGIN_URL);
-        error_log('AI TL;DR: JavaScript file path: ' . TLDR_PLUGIN_URL . 'build/index.js');
+        error_log('AI TL;DR: Block metadata path: ' . TLDR_PLUGIN_DIR . 'build/block.json');
         
-        // Check if the JavaScript file exists
-        $js_file_path = TLDR_PLUGIN_DIR . 'build/index.js';
-        if (file_exists($js_file_path)) {
-            error_log('AI TL;DR: JavaScript file exists at: ' . $js_file_path);
+        // Check if the block metadata file exists
+        $block_json_path = TLDR_PLUGIN_DIR . 'build/block.json';
+        if (file_exists($block_json_path)) {
+            error_log('AI TL;DR: Block metadata exists at: ' . $block_json_path);
         } else {
-            error_log('AI TL;DR: ERROR - JavaScript file NOT found at: ' . $js_file_path);
-        }
-        
-        // Register and enqueue the block editor script
-        $script_registered = wp_register_script(
-            'ai-tldr-block-editor',
-            TLDR_PLUGIN_URL . 'build/index.js',
-            array('wp-blocks', 'wp-block-editor', 'wp-element', 'wp-components', 'wp-i18n', 'wp-data', 'wp-api-fetch'),
-            TLDR_VERSION,
-            true
-        );
-        
-        if ($script_registered) {
-            error_log('AI TL;DR: Script registered successfully');
-        } else {
-            error_log('AI TL;DR: ERROR - Script registration failed');
+            error_log('AI TL;DR: ERROR - block metadata NOT found at: ' . $block_json_path);
         }
 
-        // Register and enqueue the block editor styles
-        wp_register_style(
-            'ai-tldr-block-editor-style',
-            TLDR_PLUGIN_URL . 'build/editor.css',
-            array('wp-edit-blocks'),
-            TLDR_VERSION
-        );
-
-        // Register and enqueue the block frontend styles
-        wp_register_style(
-            'ai-tldr-block-style',
-            TLDR_PLUGIN_URL . 'build/style.css',
-            array(),
-            TLDR_VERSION
-        );
-
-        // Register the block type with explicit script handles
-        $block_registered = register_block_type('ai-tldr/summary-block', array(
-            'editor_script' => 'ai-tldr-block-editor',
-            'editor_style' => 'ai-tldr-block-editor-style',
-            'style' => 'ai-tldr-block-style',
-            'render_callback' => array($this, 'render_block'),
-            'attributes' => array(
-                'summary' => array(
-                    'type' => 'string',
-                    'default' => ''
-                ),
-                'length' => array(
-                    'type' => 'string',
-                    'default' => 'medium'
-                ),
-                'tone' => array(
-                    'type' => 'string',
-                    'default' => 'neutral'
-                ),
-                'isPinned' => array(
-                    'type' => 'boolean',
-                    'default' => false
-                ),
-                'autoRegenerate' => array(
-                    'type' => 'boolean',
-                    'default' => false
-                ),
-                'lastGenerated' => array(
-                    'type' => 'string',
-                    'default' => ''
-                ),
-                'source' => array(
-                    'type' => 'string',
-                    'default' => ''
-                ),
-                'tokenCount' => array(
-                    'type' => 'number',
-                    'default' => 0
-                )
-            )
-        ));
+        // Register the block type from build/block.json (single source of truth)
+        $block_registered = register_block_type(TLDR_PLUGIN_DIR . 'build');
         
         if ($block_registered) {
             error_log('AI TL;DR: Block type registered successfully');
