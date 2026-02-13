@@ -314,8 +314,7 @@ class TLDR_Content {
         }
         
         // Check if auto-regeneration is enabled
-        $auto_regen = get_post_meta($post_id, '_ai_tldr_auto_regen', true);
-        if ($auto_regen === 'false' || $auto_regen === false) {
+        if (!TLDR_Service::get_auto_regen_status($post_id)) {
             return;
         }
         
